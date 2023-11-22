@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PostgreSQL Command Gen</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+</head>
+
+<body onload="updateFrequency()">
+    <div class="mt-11">
+        <form id="taskForm" class="max-w-3xl mx-auto">
+            <div class="mb-5">
+                <label for="system" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Operating
+                    System:</label>
+                <select id="system"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <option value="windows">Windows</option>
+                    <option value="linux">Linux</option>
+                </select>
+            </div>
+            <div class="flex mb-5">
+                <div class="w-2/5">
+                    <label for="frequency"
+                        class=" block mb-2 text-sm font-medium text-gray-900 dark:text-white">Frequency:</label>
+                    <select id="frequency" onchange="updateFrequency()"
+                        class="w-5/6 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-3/5 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <option value="daily">Daily</option>
+                        <option value="weekly">Weekly</option>
+                        <option value="monthly">Monthly</option>
+                    </select>
+                </div>
+                <div class="w-3/5">
+                    <div id="dailyOptions" style="display: none;">
+                        <label for="intervalDays"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Interval
+                            (Days):</label>
+                        <select id="intervalDays"
+                            class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <script>
+                                for (let i = 1; i <= 31; i++) {
+                                    document.write('<option value="' + i + '">' + i + ' day(s)</option>');
+                                }
+                            </script>
+                        </select>
+                    </div>
+
+                    <div id="weeklyOptions" style="display: none;">
+                        <label for="dayOfWeek" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Day
+                            of Week:</label>
+                        <select id="dayOfWeek"
+                            class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <option value="1">Monday</option>
+                            <option value="2">Tuesday</option>
+                            <option value="3">Wednesday</option>
+                            <option value="4">Thursday</option>
+                            <option value="5">Friday</option>
+                            <option value="6">Saturday</option>
+                            <option value="0">Sunday</option>
+                        </select>
+                    </div>
+
+                    <div id="monthlyOptions" style="display: none;">
+                        <label for="dayOfMonthMonthly"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Day of Month:</label>
+                        <select id="dayOfMonthMonthly"
+                            class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-5">
+                <label for="time" class="mb-2 text-sm font-medium text-gray-900 dark:text-white">Time (HH:MM):</label>
+                <input type="time" id="time"
+                    class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    required>
+            </div>
+
+            <div class="mb-5 flex">
+                <div class="w-1/2">
+                    <label for="dbname" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Database
+                        Name:</label>
+                    <input type="text" id="dbname" placeholder="Database Name"
+                        class="w-80 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        required>
+                </div>
+                <div class="w-1/2">
+                    <label for="username"
+                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Username:</label>
+                    <input type="text" id="username" placeholder="Username"
+                        class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        required>
+                </div>
+            </div>
+
+            <div class="mb-5">
+                <label for="filepath" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Backup File
+                    Path:</label>
+                <input type="text" id="filepath" placeholder="Path to Save Backup"
+                    class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    required>
+            </div>
+            <div class="mb-5">
+                <label for="commandOutput" id="labelCommand" style="display: none;"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Command :</label>
+                <div id="commandOutput" style="display: none;"
+                    class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                </div>
+            </div>
+            <div class="mb-5">
+
+                <button type="submit"
+                    class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Generate
+                    Command</button>
+            </div>
+        </form>
+
+
+    </div>
+
+
+    <script>
+        function updateFrequency() {
+            var frequency = document.getElementById('frequency').value;
+            document.getElementById('dailyOptions').style.display = (frequency === 'daily') ? 'block' : 'none';
+            document.getElementById('weeklyOptions').style.display = (frequency === 'weekly') ? 'block' : 'none';
+            document.getElementById('monthlyOptions').style.display = (frequency === 'monthly') ? 'block' : 'none';
+            updateDaysOfMonth();
+        }
+
+        function updateDaysOfMonth() {
+            const dayOfMonthSelectMonthly = document.getElementById('dayOfMonthMonthly');
+            dayOfMonthSelectMonthly.innerHTML = '';
+            const date = new Date();
+            const year = date.getFullYear();
+            const month = date.getMonth() + 1;
+            const daysInMonth = new Date(year, month, 0).getDate();
+
+            for (let i = 1; i <= daysInMonth; i++) {
+                let optionMonthly = new Option(i, i);
+                dayOfMonthSelectMonthly.add(optionMonthly);
+            }
+        }
+
+        document.getElementById('taskForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const system = document.getElementById('system').value;
+            const frequency = document.getElementById('frequency').value;
+            const intervalDays = document.getElementById('intervalDays').value;
+            const dayOfMonthMonthly = document.getElementById('dayOfMonthMonthly').value;
+            const dayOfWeek = document.getElementById('dayOfWeek').value;
+            const time = document.getElementById('time').value;
+            const dbname = document.getElementById('dbname').value;
+            const username = document.getElementById('username').value;
+            const filepath = document.getElementById('filepath').value;
+
+            let pgDumpCommand = `pg_dump -U ${username} ${dbname} > ${filepath}`;
+            let pgDumpCommand_linux = `pg_dump -U ${username} ${dbname} > ${filepath}`;
+
+            let generatedCommand = '';
+
+            if (system === 'windows') {
+                let timeParts = time.split(':');
+                let schTime = `${timeParts[0]}:${timeParts[1]}`;
+
+                if (frequency === 'daily') {
+                    generatedCommand = `Schtasks /Create /SC DAILY /MO ${intervalDays} /TN "PostgreSQLBackup" /TR "${pgDumpCommand}" /ST ${schTime}`;
+                } else if (frequency === 'weekly') {
+                    generatedCommand = `Schtasks /Create /SC WEEKLY /D ${dayOfWeek} /TN "PostgreSQLBackup" /TR "${pgDumpCommand}" /ST ${schTime}`;
+                } else if (frequency === 'monthly') {
+                    generatedCommand = `Schtasks /Create /SC MONTHLY /D ${dayOfMonthMonthly} /TN "PostgreSQLBackup" /TR "${pgDumpCommand}" /ST ${schTime}`;
+                }
+
+            } else if (system === 'linux') {
+                let timeParts = time.split(':');
+                let cronTime = `${timeParts[1]} ${timeParts[0]} * *`;
+
+                if (frequency === 'daily') {
+                    cronTime = `*/${intervalDays} * * *`;
+                    generatedCommand = cronTime + ` ${pgDumpCommand_linux}`;
+                } else if (frequency === 'weekly') {
+                    cronTime += ` ${dayOfWeek}`;
+                    generatedCommand = cronTime + ` ${pgDumpCommand_linux}`;
+                } else if (frequency === 'monthly') {
+                    cronTime = `${timeParts[1]} ${timeParts[0]} ${dayOfMonthMonthly} * *`;
+                    generatedCommand = cronTime + ` ${pgDumpCommand_linux}`;
+                }
+            }
+
+
+            document.getElementById('commandOutput').innerText = generatedCommand;
+            document.getElementById('commandOutput').style.display = 'block';
+            document.getElementById('labelCommand').style.display = 'block';
+
+        });
+
+        updateDaysOfMonth();
+    </script>
+
+</body>
+
+</html>
